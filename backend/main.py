@@ -1,12 +1,15 @@
 from fastapi import FastAPI
-from routes import facilities, events, transport, clubs
+from database import engine, Base
+from routes import events, clubs, facilities, transport
 
 app = FastAPI()
 
-app.include_router(facilities.router)
+Base.metadata.create_all(bind=engine)
+
 app.include_router(events.router)
-app.include_router(transport.router)
 app.include_router(clubs.router)
+app.include_router(facilities.router)
+app.include_router(transport.router)
 
 @app.get("/")
 def home():
