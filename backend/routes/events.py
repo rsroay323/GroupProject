@@ -2,6 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.security import HTTPBearer
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from sqlalchemy.orm import Session
+
+from database import get_db
+from models.event import Event
 
 # Initialize router
 router = APIRouter()
@@ -27,7 +31,7 @@ limiter = Limiter(key_func=get_remote_address)
 # -------------------------------
 @router.get("/events", dependencies=[Depends(verify_token)])
 @limiter.limit("5/minute")
-def get_events(request: Request):
+def get_events(request: Request, db: Session = Depends(get_db)):
     """
     Returns a list of campus events.
     Only accessible to authenticated users.
@@ -36,7 +40,6 @@ def get_events(request: Request):
     # Logging access for Repudiation / Monitoring (A09)
     print("Events endpoint accessed")
 
-    return [
-        {"title": "Quiz Night", "time": "8 PM"},
-        {"title": "Coding Club", "time": "5 PM"}
-    ]
+    events = db.query(Event).all()
+
+    return events

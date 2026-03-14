@@ -3,6 +3,10 @@ from fastapi.security import HTTPBearer
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+from sqlalchemy.orm import Session
+
+from database import get_db
+from models.club import Club
 
 # Initialize router
 router = APIRouter()
@@ -31,7 +35,7 @@ limiter = Limiter(key_func=get_remote_address)
 # -------------------------------
 @router.get("/clubs", dependencies=[Depends(verify_token)])
 @limiter.limit("5/minute")
-def get_clubs(request: Request):
+def get_clubs(request: Request, db: Session = Depends(get_db)):
     """
     Returns a list of campus clubs.
     Only accessible to authenticated users.
@@ -40,7 +44,5 @@ def get_clubs(request: Request):
     # Logging access for Repudiation / Monitoring (A09)
     print("Clubs endpoint accessed")
     
-    return [
-        {"name": "Coding Club"},
-        {"name": "Cybersecurity Club"}
-    ]
+    clubs = db.query(Club).all()
+    return clubs

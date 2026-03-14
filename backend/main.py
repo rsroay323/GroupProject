@@ -6,6 +6,7 @@ from fastapi.security import HTTPBearer
 from database import Base, engine
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from models import user, event, club, facility, transport
 import logging
 
 # ------------------------------------------------
