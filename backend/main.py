@@ -8,6 +8,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from models import user, event, club, facility, transport as transport_model
 import logging
+from database import SessionLocal
+from models.club import Club
+from models.event import Event
+from models.facility import Facility
+from models.transport import Transport
+
 
 # ------------------------------------------------
 # A05: Security Misconfiguration / Information Exposure
@@ -20,6 +26,40 @@ app = FastAPI(
 )
 
 Base.metadata.create_all(bind=engine)
+
+def seed_database():
+    db = SessionLocal()
+    
+    if db.query(Club).first() is None:
+
+        db.add_all([
+            Club(name="Coding Club"),
+            Club(name="Cyber Security Club"),
+            Club(name="Dance Club")
+        ])
+
+        db.add_all([
+            Event(title="Hackathon", time="18:00"),
+            Event(title="Quiz Night", time="19:30"),
+            Event(title="AI Workshop", time="17:00")
+        ])
+
+        db.add_all([
+            Facility(name="Gym", status="Open"),
+            Facility(name="Library", status="Open"),
+            Facility(name="Sports Hall", status="Closed")
+        ])
+
+        db.add_all([
+            Transport(bus="Bus 529"),
+            Transport(bus="Bus 51")
+        ])
+
+        db.commit()
+
+    db.close()
+
+seed_database()
 # ------------------------------------------------
 # A09: Security Logging and Monitoring Failures
 # Logging to monitor API activity
