@@ -23,23 +23,53 @@
         <div class="row justify-content-center">
 
             <div class="col-md-3 mb-3">
-                <button class="btn btn-primary w-100 p-3">Clubs</button>
+                <button class="btn btn-primary w-100 p-3" id="clubsBtn">Clubs</button>
             </div>
 
             <div class="col-md-3 mb-3">
-                <button class="btn btn-success w-100 p-3">Events</button>
+                <button class="btn btn-success w-100 p-3" id="eventsBtn">Events</button>
             </div>
 
             <div class="col-md-3 mb-3">
-                <button class="btn btn-warning w-100 p-3">Facilities</button>
+                <button class="btn btn-warning w-100 p-3" id="facilitiesBtn">Facilities</button>
             </div>
 
             <div class="col-md-3 mb-3">
-                <button class="btn btn-danger w-100 p-3">Transport</button>
+                <button class="btn btn-danger w-100 p-3" id="transportBtn">Transport</button>
             </div>
 
         </div>
     </div>
+
+    <!-- Load your API functions -->
+    <script src="api.js"></script>
+
+    <!-- Button logic -->
+    <script>
+        document.getElementById("facilitiesBtn").onclick = async () => {
+            const data = await window.api.getFacilities();
+            console.log("Facilities:", data);
+            alert("Facilities loaded — check console");
+        };
+
+        document.getElementById("transportBtn").onclick = async () => {
+            const data = await window.api.getTransport();
+            console.log("Transport:", data);
+            alert("Transport loaded — check console");
+        };
+
+        document.getElementById("clubsBtn").onclick = async () => {
+            const data = await window.api.getClubs();
+            console.log("Clubs:", data);
+            alert("Clubs loaded — check console");
+        };
+
+        document.getElementById("eventsBtn").onclick = async () => {
+            const data = await window.api.getEvents();
+            console.log("Events:", data);
+            alert("Events loaded — check console");
+        };
+    </script>
 
 </body>
 </html>
