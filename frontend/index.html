@@ -6,69 +6,112 @@
     <title>Campus Hub</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-img-top {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-weight: 600;
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body>
 
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <span class="navbar-brand mb-0 h1">Campus Hub</span>
+            <span class="navbar-brand">Campus Hub</span>
         </div>
     </nav>
 
     <div class="container text-center mt-5">
-
         <h1 class="mb-4">University of Wolverhampton</h1>
+    </div>
 
-        <div class="row justify-content-center">
+    <div class="container">
+        <div class="row g-4">
 
-            <div class="col-md-3 mb-3">
-                <button class="btn btn-primary w-100 p-3" id="clubsBtn">Clubs</button>
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 text-center" onclick="openPage('clubs.html')">
+                    <img src="images/club_image.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h5>Clubs</h5>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-3 mb-3">
-                <button class="btn btn-success w-100 p-3" id="eventsBtn">Events</button>
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 text-center" onclick="openPage('events.html')">
+                    <img src="images/events_image.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h5>Events</h5>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-3 mb-3">
-                <button class="btn btn-warning w-100 p-3" id="facilitiesBtn">Facilities</button>
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 text-center" onclick="openPage('facilities.html')">
+                    <img src="images/facilities_image.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h5>Facilities</h5>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-3 mb-3">
-                <button class="btn btn-danger w-100 p-3" id="transportBtn">Transport</button>
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 text-center" onclick="openPage('transport.html')">
+                    <img src="images/transport_image.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h5>Transport</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 text-center" onclick="openPage('checkin.html')">
+                    <img src="images/checkin_image.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h5>Check-In</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 text-center" onclick="openPage('rewards.html')">
+                    <img src="images/rewards_image.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h5>Rewards</h5>
+                    </div>
+                </div>
             </div>
 
         </div>
     </div>
 
-    <!-- Load your API functions -->
-    <script src="api.js"></script>
-
-    <!-- Button logic -->
     <script>
-        document.getElementById("facilitiesBtn").onclick = async () => {
-            const data = await window.api.getFacilities();
-            console.log("Facilities:", data);
-            alert("Facilities loaded — check console");
-        };
-
-        document.getElementById("transportBtn").onclick = async () => {
-            const data = await window.api.getTransport();
-            console.log("Transport:", data);
-            alert("Transport loaded — check console");
-        };
-
-        document.getElementById("clubsBtn").onclick = async () => {
-            const data = await window.api.getClubs();
-            console.log("Clubs:", data);
-            alert("Clubs loaded — check console");
-        };
-
-        document.getElementById("eventsBtn").onclick = async () => {
-            const data = await window.api.getEvents();
-            console.log("Events:", data);
-            alert("Events loaded — check console");
-        };
+        function openPage(page) {
+            window.location.href = window.location.origin + '/frontend/' + page;
+        }
     </script>
 
 </body>
