@@ -4,10 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 15px;
+        }
+
+        .container {
+            margin-top: 40px;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Events</h1>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <span class="navbar-brand">Events</span>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <div class="row" id="eventsContainer">
+
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+
+    <script>
+        async function loadEvents() {
+            try {
+                const events = await window.api.getEvents();
+
+                const container = document.getElementById("eventsContainer");
+                container.innerHTML = "";
+
+                events.forEach(event => {
+                    const card = `
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm p-3">
+                                <h5>${event.title}</h5>
+                                <p>Date: ${event.date}</p>
+                                <p>Time: ${event.time}</p>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+
+            } catch (error) {
+                console.error("Error loading events:", error);
+            }
+        }
+
+        loadEvents();
+    </script>
 
 </body>
 </html>

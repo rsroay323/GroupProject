@@ -13,6 +13,7 @@ from models.club import Club
 from models.event import Event
 from models.facility import Facility
 from models.transport import Transport
+from datetime import date
 
 
 # ------------------------------------------------
@@ -43,9 +44,9 @@ def seed_database():
         ])
 
         db.add_all([
-            Event(title="Hackathon", time="18:00"),
-            Event(title="Quiz Night", time="19:30"),
-            Event(title="AI Workshop", time="17:00")
+            Event(title="Hackathon", time="18:00", date=date(2026, 10, 15)),
+            Event(title="Quiz Night", time="19:30", date=date(2026, 10, 16)),
+            Event(title="AI Workshop", time="17:00", date=date(2026, 10, 17))
         ])
 
         db.add_all([
@@ -101,10 +102,9 @@ app.add_middleware(
 # Restrict which websites can call the API
 # ------------------------------------------------
 origins = [
-    "http://localhost",
-    "http://127.0.0.1"
+    "http://localhost:5500",
+    "http://127.0.0.1:5500"
 ]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

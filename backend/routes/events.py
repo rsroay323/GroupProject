@@ -30,7 +30,7 @@ limiter = Limiter(key_func=get_remote_address)
 # Endpoint with security
 # -------------------------------
 @router.get("/events", dependencies=[Depends(verify_token)])
-@limiter.limit("5/minute")
+@limiter.limit("100/minute")
 def get_events(request: Request, db: Session = Depends(get_db)):
     """
     Returns a list of campus events.
