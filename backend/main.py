@@ -14,7 +14,7 @@ from models.event import Event
 from models.facility import Facility
 from models.transport import Transport
 from datetime import date
-
+from datetime import time
 
 # ------------------------------------------------
 # A05: Security Misconfiguration / Information Exposure
@@ -44,16 +44,35 @@ def seed_database():
         ])
 
         db.add_all([
-            Event(title="Hackathon", time="18:00", date=date(2026, 10, 15)),
-            Event(title="Quiz Night", time="19:30", date=date(2026, 10, 16)),
-            Event(title="AI Workshop", time="17:00", date=date(2026, 10, 17))
+            Event(title="Hackathon", time=time(18, 0), date=date(2026, 10, 15)),
+            Event(title="Quiz Night", time=time(19, 30), date=date(2026, 10, 16)),
+            Event(title="AI Workshop", time=time(17, 0), date=date(2026, 10, 17))
         ])
 
         db.add_all([
-            Facility(name="Gym", status="Open"),
-            Facility(name="Library", status="Open"),
-            Facility(name="Sports Hall", status="Closed")
-        ])
+    Facility(
+        name="Gym",
+        status=True,
+        description="Fully equipped gym with treadmills, weights and more",
+        opening_time=time(6, 0),
+        closing_time=time(21, 0)
+    ),
+    Facility(
+        name="Library",
+        status=True,
+        description="Quiet study space with computers, resources and more",
+        opening_time=time(8, 0),
+        closing_time=time(20, 0)
+    ),
+    Facility(
+        name="Sports Hall",
+        status=False,
+        description="Indoor sports facility with courts, equipment and more",
+        opening_time=time(9, 0),
+        closing_time=time(18, 0)
+    )
+])
+            
 
         db.add_all([
             Transport(bus="Bus 529"),

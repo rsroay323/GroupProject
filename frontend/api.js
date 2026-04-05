@@ -3,7 +3,11 @@ const TOKEN = "securetoken";
 
 // Public endpoints
 async function getFacilities() {
-  const res = await fetch(`${BASE_URL}/facilities`);
+  const res = await fetch(`${BASE_URL}/facilities`, {
+    headers: {
+      "Authorization": `Bearer ${TOKEN}`
+    }
+  });
   return res.json();
 }
 
