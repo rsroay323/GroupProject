@@ -38,9 +38,9 @@ def seed_database():
     if db.query(Club).first() is None:
 
         db.add_all([
-            Club(name="Coding Club", description= "Learn programming and build projects together", location="Room 101", session_date=date(2026, 10, 15), session_time=time(18, 0)),
-            Club(name="Cyber Security Club", description="Learn about cyber security and protect your digital assets", location="Room 202", session_date=date(2026, 10, 16), session_time=time(19, 0)),
-            Club(name="Dance Club", description="Express yourself through dance and meet new people", location="Room 303", session_date=date(2026, 10, 17), session_time=time(20, 0))
+            Club(name="Coding Club", description= "Learn programming and build projects together", location="Room 303", session_date=date(2026, 10, 15), session_time=time(18, 0)),
+            Club(name="Cyber Security Club", description="Learn about cyber security ", location="Room 43", session_date=date(2026, 10, 16), session_time=time(19, 0)),
+            Club(name="Dance Club", description="Express yourself through dance and meet new people", location="Room 763", session_date=date(2026, 10, 17), session_time=time(20, 0))
         ])
 
         db.add_all([
