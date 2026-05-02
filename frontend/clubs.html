@@ -62,7 +62,6 @@ body { background:#f8f9fa; }
 </div>
 
 <script src="api.js"></script>
-
 <script>
 
 function showForm(){
@@ -81,16 +80,30 @@ function saveJoinedClubs(data){
     localStorage.setItem("joinedClubs", JSON.stringify(data));
 }
 
+function getPoints(){
+    return parseInt(localStorage.getItem("points")) || 0;
+}
+
+function setPoints(value){
+    localStorage.setItem("points", value);
+}
+
 function toggleJoinClub(id){
+
     let joined = joinedClubs();
+    let points = getPoints();
 
     if(joined.includes(id)){
         joined = joined.filter(x => x !== id);
+        points -= 10;
     }else{
         joined.push(id);
+        points += 10;
     }
 
     saveJoinedClubs(joined);
+    setPoints(points);
+
     loadClubs();
 }
 

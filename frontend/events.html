@@ -45,17 +45,31 @@ function saveJoinedEvents(data){
     localStorage.setItem("joinedEvents", JSON.stringify(data));
 }
 
+function getPoints(){
+    return parseInt(localStorage.getItem("points")) || 0;
+}
+
+function setPoints(value){
+    localStorage.setItem("points", value);
+}
+
 function toggleJoinEvent(id){
 
     let joined = joinedEvents();
+    let points = getPoints();
 
     if(joined.includes(id)){
         joined = joined.filter(x => x !== id);
+        points -= 15;
     }else{
         joined.push(id);
+        points += 15;
+        alert("+15 Points");
     }
 
     saveJoinedEvents(joined);
+    setPoints(points);
+
     loadEvents();
 }
 
@@ -98,5 +112,6 @@ async function loadEvents(){
 loadEvents();
 
 </script>
+
 </body>
 </html>
