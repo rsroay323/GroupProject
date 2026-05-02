@@ -1,80 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Clubs</title>
+<meta charset="UTF-8">
+<title>Clubs</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        body { background-color: #f8f9fa; }
+<style>
+body {
+    background-color: #f8f9fa;
+}
 
-        .card {
-            border-radius: 15px;
-            transition: 0.2s;
-        }
+.card {
+    border-radius: 15px;
+    transition: 0.2s;
+}
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
-    </style>
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+#clubForm {
+    display: none;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+</style>
 </head>
 
 <body>
 
 <nav class="navbar navbar-dark bg-dark">
-    <div class="container">
-        <span class="navbar-brand">Clubs</span>
-    </div>
+<div class="container">
+<span class="navbar-brand">Clubs</span>
+</div>
 </nav>
 
+<div class="container mt-4 text-end">
+<button class="btn btn-primary" onclick="showForm()">Add Club</button>
+</div>
+
+<div class="container mt-3">
+<div id="clubForm">
+
+<h4 class="mb-3">Add New Club</h4>
+
+<input id="name" class="form-control mb-2" placeholder="Club Name">
+
+<input id="description" class="form-control mb-2" placeholder="Description">
+
+<input id="location" class="form-control mb-2" placeholder="Location">
+
+<input id="date" type="date" class="form-control mb-2">
+
+<input id="time" type="time" class="form-control mb-3">
+
+<button class="btn btn-success" onclick="submitClub()">Submit</button>
+
+<button class="btn btn-secondary" onclick="hideForm()">Cancel</button>
+
+</div>
+</div>
+
 <div class="container mt-4">
-    <div class="row" id="clubsContainer"></div>
+<div class="row" id="clubsContainer"></div>
 </div>
 
 <script src="api.js"></script>
 
 <script>
+
+function showForm() {
+    document.getElementById("clubForm").style.display = "block";
+}
+
+function hideForm() {
+    document.getElementById("clubForm").style.display = "none";
+}
+
 async function loadClubs() {
-    try {
-        const clubs = await window.api.getClubs();
+    const clubs = await window.api.getClubs();
 
-        const container = document.getElementById("clubsContainer");
-        container.innerHTML = "";
+    const container = document.getElementById("clubsContainer");
+    container.innerHTML = "";
 
-        clubs.forEach(club => {
+    clubs.forEach(club => {
 
-            const date = new Date(club.session_date).toLocaleDateString();
-            const time = club.session_time.slice(0,5);
+        const date = new Date(club.session_date).toLocaleDateString();
+        const time = club.session_time.slice(0,5);
 
-            const card = `
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm p-3">
+        let buttons = "";
 
-                        <h5>${club.name}</h5>
-
-                        <p>${club.description}</p>
-
-                        <p><strong>Date:</strong> ${date}</p>
-
-                        <p><strong>Time:</strong> ${time}</p>
-
-                        <p><strong>Location:</strong> ${club.location}</p>
-
-                    </div>
-                </div>
+        if (club.id > 3) {
+            buttons = `
+                <button class="btn btn-warning mt-2" onclick="editClub(${club.id})">Edit</button>
+                <button class="btn btn-danger mt-2" onclick="deleteClub(${club.id})">Delete</button>
             `;
+        }
 
-            container.innerHTML += card;
-        });
+        const card = `
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm p-3">
 
-    } catch (error) {
-        console.error("Error loading clubs:", error);
-    }
+                    <h5>${club.name}</h5>
+                    <p>${club.description}</p>
+                    <p><strong>Date:</strong> ${date}</p>
+                    <p><strong>Time:</strong> ${time}</p>
+                    <p><strong>Location:</strong> ${club.location}</p>
+
+                    ${buttons}
+
+                </div>
+            </div>
+        `;
+
+        container.innerHTML += card;
+    });
+}
+
+async function submitClub() {
+
+    const data = {
+        name: document.getElementById("name").value,
+        description: document.getElementById("description").value,
+        location: document.getElementById("location").value,
+        session_date: document.getElementById("date").value,
+        session_time: document.getElementById("time").value
+    };
+
+    await window.api.addClub(data);
+
+    hideForm();
+    loadClubs();
+}
+
+async function deleteClub(id) {
+    await window.api.deleteClub(id);
+    loadClubs();
+}
+
+async function editClub(id) {
+    const name = prompt("New name:");
+    const description = prompt("New description:");
+    const location = prompt("New location:");
+    const date = prompt("New date YYYY-MM-DD:");
+    const time = prompt("New time HH:MM:");
+
+    await window.api.updateClub(id, {
+        name,
+        description,
+        location,
+        session_date: date,
+        session_time: time
+    });
+
+    loadClubs();
 }
 
 loadClubs();
+
 </script>
 
 </body>
