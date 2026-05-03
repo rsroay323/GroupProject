@@ -1,13 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check-In</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Check-In</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body{
+    background:#f8f9fa;
+}
+
+.checkin-box{
+    max-width:500px;
+    margin:auto;
+    margin-top:80px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    text-align:center;
+}
+</style>
 </head>
+
 <body>
 
-    <h1>Check-In</h1>
+<nav class="navbar navbar-dark bg-dark">
+<div class="container">
+<span class="navbar-brand">Lecture and Workshop Check-In</span>
+</div>
+</nav>
+
+<div class="container">
+<div class="checkin-box">
+
+<h2 class="mb-4">Check-In</h2>
+
+<p>Enter today's Lecture or Workshop code</p>
+
+<input
+    type="text"
+    id="pin"
+    maxlength="4"
+    class="form-control mb-3 text-center"
+    placeholder="----"
+>
+
+<button class="btn btn-success w-100" onclick="checkIn()">
+    Check In
+</button>
+
+</div>
+</div>
+
+<script>
+
+function getPoints(){
+    return parseInt(localStorage.getItem("points")) || 0;
+}
+
+function setPoints(value){
+    localStorage.setItem("points", value);
+}
+
+function checkIn(){
+
+    const pin = document.getElementById("pin").value;
+
+    if(pin.length === 4 && !isNaN(pin)){
+
+        let points = getPoints();
+        points += 20;
+        setPoints(points);
+
+        alert("+20 Points");
+
+        document.getElementById("pin").value = "";
+
+    }else{
+        alert("Incorrect code. Please try again.");
+    }
+}
+
+</script>
 
 </body>
 </html>

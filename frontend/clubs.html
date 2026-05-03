@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Clubs</title>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-body { background:#f8f9fa; }
+body{
+    background:#f8f9fa;
+}
 
 .card{
     border-radius:15px;
@@ -62,14 +65,15 @@ body { background:#f8f9fa; }
 </div>
 
 <script src="api.js"></script>
+
 <script>
 
-function showForm(){
-    document.getElementById("clubForm").style.display="block";
+function getPoints(){
+    return parseInt(localStorage.getItem("points")) || 0;
 }
 
-function hideForm(){
-    document.getElementById("clubForm").style.display="none";
+function setPoints(value){
+    localStorage.setItem("points", value);
 }
 
 function joinedClubs(){
@@ -80,31 +84,12 @@ function saveJoinedClubs(data){
     localStorage.setItem("joinedClubs", JSON.stringify(data));
 }
 
-function getPoints(){
-    return parseInt(localStorage.getItem("points")) || 0;
+function showForm(){
+    document.getElementById("clubForm").style.display = "block";
 }
 
-function setPoints(value){
-    localStorage.setItem("points", value);
-}
-
-function toggleJoinClub(id){
-
-    let joined = joinedClubs();
-    let points = getPoints();
-
-    if(joined.includes(id)){
-        joined = joined.filter(x => x !== id);
-        points -= 10;
-    }else{
-        joined.push(id);
-        points += 10;
-    }
-
-    saveJoinedClubs(joined);
-    setPoints(points);
-
-    loadClubs();
+function hideForm(){
+    document.getElementById("clubForm").style.display = "none";
 }
 
 async function loadClubs(){
@@ -125,16 +110,29 @@ async function loadClubs(){
         if(club.id <= 3){
 
             if(joined.includes(club.id)){
-                buttons = `<button class="btn btn-danger mt-2" onclick="toggleJoinClub(${club.id})">Leave</button>`;
+                buttons = `
+                <button class="btn btn-danger mt-2"
+                onclick="toggleJoinClub(${club.id})">
+                Leave
+                </button>
+                `;
             }else{
-                buttons = `<button class="btn btn-success mt-2" onclick="toggleJoinClub(${club.id})">Join</button>`;
+                buttons = `
+                <button class="btn btn-success mt-2"
+                onclick="toggleJoinClub(${club.id})">
+                Join
+                </button>
+                `;
             }
 
         }else{
 
             buttons = `
-                <button class="btn btn-warning mt-2" onclick="editClub(${club.id})">Edit</button>
-                <button class="btn btn-danger mt-2" onclick="deleteClub(${club.id})">Delete</button>
+            <button class="btn btn-warning mt-2"
+            onclick="editClub(${club.id})">Edit</button>
+
+            <button class="btn btn-danger mt-2"
+            onclick="deleteClub(${club.id})">Delete</button>
             `;
         }
 
@@ -153,6 +151,30 @@ async function loadClubs(){
 
         container.innerHTML += card;
     });
+}
+
+function toggleJoinClub(id){
+
+    let joined = joinedClubs();
+    let points = getPoints();
+
+    if(joined.includes(id)){
+
+        joined = joined.filter(x => x !== id);
+        points -= 10;
+
+    }else{
+
+        joined.push(id);
+        points += 10;
+
+        alert("+10 Points");
+    }
+
+    saveJoinedClubs(joined);
+    setPoints(points);
+
+    loadClubs();
 }
 
 async function submitClub(){
@@ -198,5 +220,6 @@ async function editClub(id){
 loadClubs();
 
 </script>
+
 </body>
 </html>
