@@ -55,13 +55,7 @@ function setPoints(value){
     localStorage.setItem("points", value);
 }
 
-function checkedFacilities(){
-    return JSON.parse(localStorage.getItem("checkedFacilities")) || [];
-}
-
-function saveCheckedFacilities(data){
-    localStorage.setItem("checkedFacilities", JSON.stringify(data));
-}
+let checkedFacilities = [];
 
 function checkInFacility(id, name){
 
@@ -75,9 +69,7 @@ function checkInFacility(id, name){
         points += 20;
         setPoints(points);
 
-        let checked = checkedFacilities();
-        checked.push(id);
-        saveCheckedFacilities(checked);
+        checkedFacilities.push(id);
 
         alert("+20 Points");
 
@@ -91,7 +83,6 @@ function checkInFacility(id, name){
 async function loadFacilities(){
 
     const facilities = await window.api.getFacilities();
-    const checked = checkedFacilities();
 
     const container = document.getElementById("facilitiesContainer");
     container.innerHTML = "";
@@ -108,7 +99,7 @@ async function loadFacilities(){
 
         if(facility.status){
 
-            if(checked.includes(facility.id)){
+            if(checkedFacilities.includes(facility.id)){
 
                 button = `
                 <button class="btn btn-secondary mt-2" disabled>
@@ -120,7 +111,7 @@ async function loadFacilities(){
 
                 button = `
                 <button class="btn btn-success mt-2"
-                    onclick="checkInFacility(${facility.id}, '${facility.name}')">
+                onclick="checkInFacility(${facility.id}, '${facility.name}')">
                     Check In
                 </button>
                 `;
@@ -146,6 +137,3 @@ async function loadFacilities(){
 loadFacilities();
 
 </script>
-
-</body>
-</html>
