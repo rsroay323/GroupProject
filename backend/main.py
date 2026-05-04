@@ -1,5 +1,3 @@
-# main.py
-
 from fastapi import FastAPI, Depends, HTTPException, Request
 from routes import facilities, events, transport, clubs
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -15,6 +13,7 @@ from models.facility import Facility
 from models.transport import Transport
 from datetime import date
 from datetime import time
+from routes import users 
 
 # ------------------------------------------------
 # A05: Security Misconfiguration / Information Exposure
@@ -140,7 +139,7 @@ app.include_router(facilities.router, dependencies=[Depends(verify_token)])
 app.include_router(events.router, dependencies=[Depends(verify_token)])
 app.include_router(transport.router, dependencies=[Depends(verify_token)])
 app.include_router(clubs.router, dependencies=[Depends(verify_token)])
-
+app.include_router(users.router)  
 
 # ------------------------------------------------
 # A09: Logging & Monitoring
