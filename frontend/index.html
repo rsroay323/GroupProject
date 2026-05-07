@@ -110,6 +110,11 @@
     </div>
 
     <script>
+
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "createAccount.html";
+        }
     if (!localStorage.getItem("loggedInUser")) {
     window.location.href = "createAccount.html";
     }
@@ -117,6 +122,12 @@
     function openPage(page) {
     window.location.href = window.location.origin + '/frontend/' + page;
     }
+
+    function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "createAccount.html";
+    }
+    
 </script>
 
 </body>

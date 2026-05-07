@@ -37,20 +37,30 @@ body { background:#f8f9fa; }
 
 <script>
 
+if(!localStorage.getItem("loggedInUser")){
+    window.location.href = "createAccount.html";
+}
+function getUser(){
+    return localStorage.getItem("loggedInUser");
+}
 function joinedEvents(){
-    return JSON.parse(localStorage.getItem("joinedEvents")) || [];
+    const user = getUser();
+    return JSON.parse(localStorage.getItem(user + "_events")) || [];
 }
 
 function saveJoinedEvents(data){
-    localStorage.setItem("joinedEvents", JSON.stringify(data));
+    const user = getUser();
+    localStorage.setItem(user + "_events", JSON.stringify(data));
 }
 
 function getPoints(){
-    return parseInt(localStorage.getItem("points")) || 0;
+    const user = getUser();
+    return parseInt(localStorage.getItem(user + "_points")) || 0;
 }
 
 function setPoints(value){
-    localStorage.setItem("points", value);
+    const user = getUser();
+    localStorage.setItem(user + "_points", value);
 }
 
 function toggleJoinEvent(id){

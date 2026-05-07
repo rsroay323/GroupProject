@@ -47,18 +47,35 @@ body { background-color:#f8f9fa; }
 
 <script>
 
+if(!localStorage.getItem("loggedInUser")){
+    window.location.href = "createAccount.html";
+}
+
+function getUser(){
+    return localStorage.getItem("loggedInUser");
+}
 function getPoints(){
-    return parseInt(localStorage.getItem("points")) || 0;
+    const user = getUser();
+    return parseInt(localStorage.getItem(user + "_points")) || 0;
 }
 
 function setPoints(value){
-    localStorage.setItem("points", value);
+    const user = getUser();
+    localStorage.setItem(user + "_points", value);
 }
 
-let checkedFacilities = [];
+function getCheckedFacilities(){
+    const user = getUser();
+    return JSON.parse(localStorage.getItem(user + "_checkedFacilities")) || [];
+}
+
+function saveCheckedFacilities(data){
+    const user = getUser();
+    localStorage.setItem(user + "_checkedFacilities", JSON.stringify(data));
+}
 
 function checkInFacility(id, name){
-
+    let checkedFacilities = getCheckedFacilities();
     const code = prompt(`Enter today's 4-digit code for ${name}`);
 
     if(code === null) return;
@@ -70,7 +87,7 @@ function checkInFacility(id, name){
         setPoints(points);
 
         checkedFacilities.push(id);
-
+        saveCheckedFacilities(checkedFacilities);
         alert("+20 Points");
 
         loadFacilities();
@@ -83,7 +100,7 @@ function checkInFacility(id, name){
 async function loadFacilities(){
 
     const facilities = await window.api.getFacilities();
-
+    const checkedFacilities = getCheckedFacilities();
     const container = document.getElementById("facilitiesContainer");
     container.innerHTML = "";
 

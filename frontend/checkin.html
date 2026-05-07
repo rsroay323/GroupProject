@@ -56,25 +56,47 @@ body{
 </div>
 
 <script>
-
-function getPoints(){
-    return parseInt(localStorage.getItem("points")) || 0;
+if(!localStorage.getItem("loggedInUser")){
+    window.location.href = "createAccount.html";
 }
 
+function getCheckedin(){
+    const user = getUser();
+    return  JSON.parse(localStorage.getItem(user + "_lectureCheckin")) || false;
+}
+
+function saveCheckedin(value){
+    const user = getUser();
+    localStorage.setItem(user + "_lectureCheckin", JSON.stringify(value));
+}
+function getUser(){
+    return localStorage.getItem("loggedInUser");
+}
+
+function getPoints(){
+    const user = getUser();
+    return parseInt(localStorage.getItem(user + "_points")) || 0;
+}
+
+
 function setPoints(value){
-    localStorage.setItem("points", value);
+    const user = getUser();
+    localStorage.setItem(user + "_points", value);
 }
 
 function checkIn(){
 
     const pin = document.getElementById("pin").value;
-
     if(pin.length === 4 && !isNaN(pin)){
 
+        if (getCheckedin()){
+            alert("Already checked in today");
+            return;
+        }
         let points = getPoints();
         points += 20;
         setPoints(points);
-
+        saveCheckedin(true);
         alert("+20 Points");
 
         document.getElementById("pin").value = "";

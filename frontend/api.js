@@ -92,6 +92,20 @@ async function getSecureData() {
   return res.json();
 }
 
+async function loginUser(data){
+  const res = await fetch(`${BASE_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type":  "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  return res.json();
+}
+
+ loginUser
+
 window.api = {
   getFacilities,
   getTransport,
@@ -101,6 +115,7 @@ window.api = {
   addClub,
   updateClub,
   deleteClub,
-  registerUser
+  registerUser,
+  loginUser
 
 };

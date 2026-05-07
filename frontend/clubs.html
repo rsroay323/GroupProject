@@ -68,20 +68,28 @@ body{
 
 <script>
 
+function getUser(){
+    return localStorage.getItem("loggedInUser");
+}
+
 function getPoints(){
-    return parseInt(localStorage.getItem("points")) || 0;
+    const user = getUser();
+    return parseInt(localStorage.getItem(user + "_points")) || 0;
 }
 
 function setPoints(value){
-    localStorage.setItem("points", value);
+    const user = getUser();
+    localStorage.setItem(user + "_points", value);
 }
 
 function joinedClubs(){
-    return JSON.parse(localStorage.getItem("joinedClubs")) || [];
+    const user = getUser();
+    return JSON.parse(localStorage.getItem(user + "_clubs")) || [];
 }
 
 function saveJoinedClubs(data){
-    localStorage.setItem("joinedClubs", JSON.stringify(data));
+    const user = getUser();
+    localStorage.setItem(user + "_clubs", JSON.stringify(data));
 }
 
 function showForm(){

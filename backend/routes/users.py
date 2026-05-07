@@ -14,6 +14,29 @@ def hash_password(password: str):
 
     return pwd_context.hash(password)
 
+def verify_password(plain_password, hashed_password):
+     return pwd_context.verify(plain_password, hashed_password)
+
+@router.post("/login")
+def login_user(user: dict, db: Session = Depends(get_db)):
+
+    email = user.get("email", "").strip().lower()
+    password =  user.get("password", "")
+    db_user = db.query(User).filter(User.email == email).first()
+
+    if not db_user:
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+    
+    if not verify_password(password, db_user.password_hash):
+        raise HTTPException(status_code=400, detail="Invalid credentials")  
+
+    existing_user = db.query(User).filter(User.email == email).first()
+    if not existing_user or not verify_password(password, existing_user.password_hash):
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+
+    return {"message": "Login successful"}
+
+
 @router.post("/register")
 
 def register_user(user: dict, db: Session = Depends(get_db)):

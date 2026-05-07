@@ -44,11 +44,16 @@ h1{
 </div>
 
 <script>
-function loadPoints(){
-    const points = localStorage.getItem("points") || 0;
-    document.getElementById("points").innerText = points;
+
+if(!localStorage.getItem("loggedInUser")){
+    window.location.href = "createAccount.html";
 }
 
+function loadPoints(){
+    const user = localStorage.getItem("loggedInUser");
+    const points = localStorage.getItem(user + "_points") || 0;
+    document.getElementById("points").innerText = points;
+}
 loadPoints();
 </script>
 
