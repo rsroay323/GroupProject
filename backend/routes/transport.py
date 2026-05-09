@@ -8,5 +8,5 @@ router = APIRouter()
 
 @router.get("/transport")
 def get_transport(db: Session = Depends(get_db)):
-    transport = db.query(Transport).first()
+    transport = db.query(Transport).all()
     return transport

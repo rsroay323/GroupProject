@@ -13,7 +13,12 @@ async function getFacilities() {
 }
 
 async function getTransport() {
-  const res = await fetch(`${BASE_URL}/transport`);
+  const res = await fetch(`${BASE_URL}/transport`, {
+    headers: {
+      "Authorization": `Bearer ${TOKEN}`
+    } 
+  });
+  
   return res.json();
 }
 
